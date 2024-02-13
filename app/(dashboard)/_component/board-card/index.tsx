@@ -10,6 +10,8 @@ import { formatDistanceToNow } from 'date-fns'
 import { Overlay } from '@/app/(dashboard)/_component/board-card/overlay'
 import { Footer } from '@/app/(dashboard)/_component/board-card/footer'
 
+import { Skeleton } from '@/components/ui/skeleton'
+
 interface BoardCardProps {
   id: string
   title: string
@@ -53,5 +55,13 @@ export const BoardCard = ({
         />
       </div>
     </Link>
+  )
+}
+
+BoardCard.Skeleton = function BoardCardSkeleton() {
+  return (
+    <div className=' aspect-[100/127]  rounded-lg  overflow-hidden'>
+      <Skeleton className='w-full h-full' />
+    </div>
   )
 }
