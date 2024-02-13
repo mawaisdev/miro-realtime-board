@@ -8,6 +8,7 @@ import { EmptyBoards } from '@/app/(dashboard)/_component/empty-boards'
 import { EmptyFavorites } from '@/app/(dashboard)/_component/empty-favorites'
 
 import { BoardCard } from '@/app/(dashboard)/_component/board-card'
+import { NewBoardButton } from '@/app/(dashboard)/_component/new-board-button'
 
 interface BoardListProps {
   orgId: string
@@ -33,6 +34,7 @@ export const BoardList = ({ query, orgId }: BoardListProps) => {
         {query.favorites ? 'Favorites Boards' : 'Team Boards'}
       </h2>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 mt-8 pb-10'>
+        <NewBoardButton orgId={orgId} />
         {data?.map((board) => (
           <BoardCard
             key={board._id}
