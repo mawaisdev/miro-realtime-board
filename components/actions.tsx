@@ -10,9 +10,10 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 
-import { Link2, Trash2 } from 'lucide-react'
+import { Link2, Pen, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
+import { useRenameModel } from '@/store/use-rename-model'
 import { useApiMutation } from '@/hooks/use-api-mutation'
 import { api } from '@/convex/_generated/api'
 
@@ -33,8 +34,8 @@ export const Actions = ({
   sideOffset,
   side,
 }: ActionsProps) => {
+  const { onOpen } = useRenameModel()
   const { mutate, pending } = useApiMutation(api.board.remove)
-
   const onCopyLink = () => {
     navigator.clipboard
       .writeText(`${window.location.origin}/board/${id}`)
@@ -59,6 +60,14 @@ export const Actions = ({
         <DropdownMenuItem className='p-3 cursor-pointer' onClick={onCopyLink}>
           <Link2 className='h-4 w-4 mr-2' />
           Copy Board Link
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          className='p-3 cursor-pointer'
+          onClick={() => onOpen(id, title)}
+        >
+          <Pen className='h-4 w-4 mr-2' />
+          Rename
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
