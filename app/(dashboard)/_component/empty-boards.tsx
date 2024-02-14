@@ -25,7 +25,7 @@ export const EmptyBoards = () => {
       orgId: organization?.id,
     })
       .then((id) => {
-        toast.success('Board Created')
+        toast.success('Board created Successfully')
         router.push(`/board/${id}`)
       })
       .catch(() => toast.error('Failed to create board'))
