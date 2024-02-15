@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   if (board?.orgId !== authorization.orgId)
     return new Response('Unauthorized', { status: 403 })
   const userInfo = {
-    name: user.firstName || 'Anonymous',
+    name: user.lastName || 'Anonymous',
     picture: user.imageUrl,
   }
   const session = liveblocks.prepareSession(user.id, {
