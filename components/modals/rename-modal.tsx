@@ -38,7 +38,7 @@ export const RenameModel = () => {
       title,
     })
       .then(() => {
-        toast.success('Updated Successfully')
+        toast.success('Renamed Successfully')
         onClose()
       })
       .catch(() => toast.error('Failed to rename board'))
