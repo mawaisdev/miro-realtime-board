@@ -12,19 +12,29 @@ import {
   useCanRedo,
   useCanUndo,
   useMutation,
+  useStorage,
 } from '@/liveblocks.config'
-import { Camera, CanvasMode, CanvasState } from '@/types/canvas'
+import { Camera, CanvasMode, CanvasState, Color } from '@/types/canvas'
 import { pointerEventToCanvasPoint } from '@/lib/utils'
 
 interface CanvasProps {
   boardId: string
 }
 
+const MAX_LAYERS = 100
+
 export const Canvas = ({ boardId }: CanvasProps) => {
+  const layerIds = useStorage((root) => root.layerIds)
+
   const [canvasState, setCanvasState] = useState<CanvasState>({
     mode: CanvasMode.None,
   })
   const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 })
+  const [lastUsedColor, setLastUsedColor] = useState<Color>({
+    r: 0,
+    g: 0,
+    b: 0,
+  })
 
   const { undo, redo } = useHistory()
   const canUndo = useCanUndo()
@@ -68,7 +78,11 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
       >
-        <g>
+        <g
+          style={{
+            transform: `translate(${camera.x}px, ${camera.y}px)`,
+          }}
+        >
           <CursorsPresence />
         </g>
       </svg>
