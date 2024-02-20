@@ -10,7 +10,7 @@ import { Rectangle } from '@/app/board/[boardId]/_components/rectangle'
 interface LayerPreviewProps {
   id: string
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void
-  selectionColor?: string | null
+  selectionColor?: string
 }
 
 export const LayerPreview = memo(
