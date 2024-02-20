@@ -6,6 +6,7 @@ import { Info } from '@/app/board/[boardId]/_components/info'
 import { Toolbar } from '@/app/board/[boardId]/_components/toolbar'
 import { Participants } from '@/app/board/[boardId]/_components/participants'
 import { LayerPreview } from '@/app/board/[boardId]/_components/layer-preview'
+import { SelectionBox } from '@/app/board/[boardId]/_components/selection-box'
 import { CursorsPresence } from '@/app/board/[boardId]/_components/cursors-presence'
 
 import { nanoid } from 'nanoid'
@@ -192,6 +193,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
               selectionColor={layerIdsToColorSelection[layerId]}
             />
           ))}
+          <SelectionBox onResizeHandlePointerDown={() => {}} />
           <CursorsPresence />
         </g>
       </svg>
