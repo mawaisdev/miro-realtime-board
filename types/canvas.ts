@@ -6,10 +6,9 @@ export type CanvasState =
       mode: CanvasMode.Inserting
       layerType:
         | LayerType.Ellipse
-        | LayerType.Note
-        | LayerType.Path
         | LayerType.Rectangle
         | LayerType.Text
+        | LayerType.Note
     }
   | { mode: CanvasMode.Pencil }
   | { mode: CanvasMode.Pressing; origin: Point }
@@ -113,3 +112,10 @@ export type NoteLayer = {
   fill: Color
   value?: string
 }
+
+export type Layer =
+  | RectangleLayer
+  | EllipseLayer
+  | PathLayer
+  | TextLayer
+  | NoteLayer
