@@ -7,6 +7,7 @@ import { Toolbar } from '@/app/board/[boardId]/_components/toolbar'
 import { Participants } from '@/app/board/[boardId]/_components/participants'
 import { LayerPreview } from '@/app/board/[boardId]/_components/layer-preview'
 import { SelectionBox } from '@/app/board/[boardId]/_components/selection-box'
+import { SelectionTools } from '@/app/board/[boardId]/_components/selection-tools'
 import { CursorsPresence } from '@/app/board/[boardId]/_components/cursors-presence'
 
 import { nanoid } from 'nanoid'
@@ -275,6 +276,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         undo={history.undo}
         redo={history.redo}
       />
+      <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
       <svg
         className='h-[100vh] w-[100vw]'
         onWheel={onWheel}
