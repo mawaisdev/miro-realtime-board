@@ -28,8 +28,14 @@ import {
   Color,
   LayerType,
   Point,
+  Side,
+  XYWH,
 } from '@/types/canvas'
-import { ConnectionIdToColor, pointerEventToCanvasPoint } from '@/lib/utils'
+import {
+  ConnectionIdToColor,
+  pointerEventToCanvasPoint,
+  resizeBounds,
+} from '@/lib/utils'
 
 interface CanvasProps {
   boardId: string
@@ -88,6 +94,28 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     },
     [lastUsedColor]
   )
+
+  const resizeSelectedLayer = useMutation(
+    ({ self, storage }, point: Point) => {
+      if (canvasState.mode !== CanvasMode.Resizing) {
+        return
+      }
+
+      const bounds = resizeBounds(
+        canvasState.initialBounds,
+        canvasState.corner,
+        point
+      )
+
+      const liveLayers = storage.get('layers')
+      const layer = liveLayers.get(self.presence.selection[0])
+
+      if (layer) {
+        layer.update(bounds)
+      }
+    },
+    [canvasState]
+  )
   const onPointerUp = useMutation(
     ({}, e) => {
       const point = pointerEventToCanvasPoint(e, camera)
@@ -120,9 +148,12 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       e.preventDefault()
 
       const current = pointerEventToCanvasPoint(e, camera)
+      if (canvasState.mode === CanvasMode.Resizing) {
+        resizeSelectedLayer(current)
+      }
       setMyPresence({ cursor: current })
     },
-    []
+    [canvasState, resizeSelectedLayer, camera]
   )
 
   const onLayerPointerDown = useMutation(
@@ -147,6 +178,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     [setCanvasState, camera, history, canvasState.mode]
   )
   const selections = useOthersMapped((other) => other.presence.selection)
+
   const layerIdsToColorSelection = useMemo(() => {
     const layerIdsToColorSelection: Record<string, string> = {}
 
@@ -161,6 +193,17 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     return layerIdsToColorSelection
   }, [selections])
 
+  const onResizeHandlePointerDown = useCallback(
+    (corner: Side, initialBounds: XYWH) => {
+      history.pause()
+      setCanvasState({
+        mode: CanvasMode.Resizing,
+        initialBounds,
+        corner,
+      })
+    },
+    [history]
+  )
   return (
     <main className='h-full w-full relative bg-neutral-100 touch-none'>
       <Info boardId={boardId} />
@@ -193,7 +236,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
               selectionColor={layerIdsToColorSelection[layerId]}
             />
           ))}
-          <SelectionBox onResizeHandlePointerDown={() => {}} />
+          <SelectionBox onResizeHandlePointerDown={onResizeHandlePointerDown} />
           <CursorsPresence />
         </g>
       </svg>
