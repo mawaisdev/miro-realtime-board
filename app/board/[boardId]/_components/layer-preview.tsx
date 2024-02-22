@@ -5,6 +5,7 @@ import { memo } from 'react'
 import { useStorage } from '@/liveblocks.config'
 import { LayerType } from '@/types/canvas'
 
+import { Note } from '@/app/board/[boardId]/_components/note'
 import { Text } from '@/app/board/[boardId]/_components/text'
 import { Ellipse } from '@/app/board/[boardId]/_components/ellipse'
 import { Rectangle } from '@/app/board/[boardId]/_components/rectangle'
@@ -44,6 +45,15 @@ export const LayerPreview = memo(
       case LayerType.Text:
         return (
           <Text
+            id={id}
+            selectionColor={selectionColor}
+            onPointerDown={onLayerPointerDown}
+            layer={layer}
+          />
+        )
+      case LayerType.Note:
+        return (
+          <Note
             id={id}
             selectionColor={selectionColor}
             onPointerDown={onLayerPointerDown}
