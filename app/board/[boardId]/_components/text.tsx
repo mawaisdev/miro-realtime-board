@@ -25,7 +25,7 @@ const calculateFontSize = (width: number, height: number) => {
   const fontSizeBasedOnHeight = height * SCALE_FACTOR
   const fontSizeBasedOnWidth = width * SCALE_FACTOR
 
-  return Math.max(fontSizeBasedOnHeight, fontSizeBasedOnWidth, MAX_FONT_SIZE)
+  return Math.min(fontSizeBasedOnHeight, fontSizeBasedOnWidth, MAX_FONT_SIZE)
 }
 
 export const Text = ({
