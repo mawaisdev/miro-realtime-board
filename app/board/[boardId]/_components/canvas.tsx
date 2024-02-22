@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, useEffect } from 'react'
 
 import { Info } from '@/app/board/[boardId]/_components/info'
 import { Path } from '@/app/board/[boardId]/_components/path'
@@ -43,6 +43,9 @@ import {
   resizeBounds,
 } from '@/lib/utils'
 
+import { useDeleteLayers } from '@/hooks/use-delete-layers'
+import { useDisableScrollBounce } from '@/hooks/use-disable-scroll-bounce'
+
 interface CanvasProps {
   boardId: string
 }
@@ -64,6 +67,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     b: 0,
   })
 
+  useDisableScrollBounce()
   const history = useHistory()
   const canUndo = useCanUndo()
   const canRedo = useCanRedo()
@@ -389,6 +393,34 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     },
     [history]
   )
+
+  const deleteLayers = useDeleteLayers()
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      switch (e.key) {
+        // case 'Delete':
+        //   deleteLayers()
+        //   break
+        case 'z': {
+          if (e.ctrlKey || e.metaKey) {
+            history.undo()
+          } else if (e.altKey) {
+            history.redo()
+          }
+          break
+        }
+        default:
+          break
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [deleteLayers, history])
   return (
     <main className='h-full w-full relative bg-neutral-100 touch-none'>
       <Info boardId={boardId} />
