@@ -35,3 +35,4 @@ npm install @clerk/nextjs
 ```
 
 Step 7: Create a JWT template on clerk dashboard.
+( it is required to get proper user info )
