@@ -27,6 +27,7 @@ npm run dev
 ```
 
 Step 5: Setup Clerk Authentication (Email must be selected so to invite people to the Organization boards)
+( You need to update the Clerk for Deployed and Development Application separatly)
 
 Step 6: Install Package for clerk
 
